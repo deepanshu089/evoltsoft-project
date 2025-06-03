@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '../config/api'
 
 interface User {
   id: string
@@ -8,13 +8,13 @@ interface User {
   role: string
 }
 
-interface LoginCredentials {
+interface RegisterData {
+  name: string
   email: string
   password: string
 }
 
-interface RegisterData {
-  name: string
+interface LoginData {
   email: string
   password: string
 }
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore('auth', {
       this.error = null
       
       try {
-        const response = await axios.post('http://localhost:3001/api/auth/register', userData)
+        const response = await api.post('/api/auth/register', userData)
         
         this.token = response.data.token
         this.user = response.data.user
@@ -53,13 +53,13 @@ export const useAuthStore = defineStore('auth', {
         this.loading = false
       }
     },
-    
-    async login(credentials: LoginCredentials) {
+
+    async login(credentials: LoginData) {
       this.loading = true
       this.error = null
       
       try {
-        const response = await axios.post('http://localhost:3001/api/auth/login', credentials)
+        const response = await api.post('/api/auth/login', credentials)
         
         this.token = response.data.token
         this.user = response.data.user
@@ -83,10 +83,7 @@ export const useAuthStore = defineStore('auth', {
       this.error = null
       
       try {
-        // Configure axios with token
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-        
-        const response = await axios.get('http://localhost:3001/api/auth/user')
+        const response = await api.get('/api/auth/user')
         this.user = response.data
         return true
       } catch (error: any) {
@@ -104,9 +101,6 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       this.user = null
       localStorage.removeItem('token')
-      
-      // Clear axios default header
-      delete axios.defaults.headers.common['Authorization']
     }
   }
 })

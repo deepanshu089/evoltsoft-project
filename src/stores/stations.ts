@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '../config/api'
 import { useAuthStore } from './auth'
 
 interface Location {
@@ -28,6 +28,7 @@ interface StationFilters {
 export const useStationsStore = defineStore('stations', {
   state: () => ({
     stations: [] as Station[],
+    selectedStation: null as Station | null,
     loading: false,
     error: null as string | null,
     filters: {
@@ -54,6 +55,9 @@ export const useStationsStore = defineStore('stations', {
         
         return true
       })
+    },
+    getStationById: (state) => (id: string) => {
+      return state.stations.find(station => station._id === id)
     }
   },
   
@@ -61,7 +65,7 @@ export const useStationsStore = defineStore('stations', {
     setAxiosAuth() {
       const authStore = useAuthStore()
       if (authStore.token) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${authStore.token}`
+        api.defaults.headers.common['Authorization'] = `Bearer ${authStore.token}`
       }
     },
     
@@ -88,7 +92,7 @@ export const useStationsStore = defineStore('stations', {
           this.filters = { ...filters }
         }
         
-        const response = await axios.get(url)
+        const response = await api.get(url)
         this.stations = response.data
         return response.data
       } catch (error: any) {
@@ -105,7 +109,7 @@ export const useStationsStore = defineStore('stations', {
       this.setAxiosAuth()
       
       try {
-        const response = await axios.get(`http://localhost:3001/api/stations/${id}`)
+        const response = await api.get(`http://localhost:3001/api/stations/${id}`)
         return response.data
       } catch (error: any) {
         this.error = error.response?.data?.message || 'Failed to fetch station'
@@ -121,7 +125,7 @@ export const useStationsStore = defineStore('stations', {
       this.setAxiosAuth()
       
       try {
-        const response = await axios.post('http://localhost:3001/api/stations', stationData)
+        const response = await api.post('/api/stations', stationData)
         
         // Add to stations array
         this.stations.push(response.data)
@@ -141,7 +145,7 @@ export const useStationsStore = defineStore('stations', {
       this.setAxiosAuth()
       
       try {
-        const response = await axios.put(`http://localhost:3001/api/stations/${id}`, stationData)
+        const response = await api.put(`/api/stations/${id}`, stationData)
         
         // Update stations array
         const index = this.stations.findIndex(station => station._id === id)
@@ -165,9 +169,9 @@ export const useStationsStore = defineStore('stations', {
       
       try {
         console.log('Deleting station with ID:', id)
-        console.log('Auth header:', axios.defaults.headers.common['Authorization'])
+        console.log('Auth header:', api.defaults.headers.common['Authorization'])
         
-        const response = await axios.delete(`http://localhost:3001/api/stations/${id}`)
+        const response = await api.delete(`/api/stations/${id}`)
         console.log('Delete response:', response.data)
         
         // Remove from stations array
@@ -186,6 +190,10 @@ export const useStationsStore = defineStore('stations', {
       } finally {
         this.loading = false
       }
+    },
+
+    setSelectedStation(station: Station | null) {
+      this.selectedStation = station
     }
   }
 })

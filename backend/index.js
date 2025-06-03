@@ -27,6 +27,11 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Charging Station API' });
 });
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {

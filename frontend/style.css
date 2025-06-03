@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+@layer base {
+  :root {
+    --color-primary-50: 239 246 255;
+    --color-primary-100: 219 234 254;
+    --color-primary-200: 191 219 254;
+    --color-primary-300: 147 197 253;
+    --color-primary-400: 96 165 250;
+    --color-primary-500: 59 130 246;
+    --color-primary-600: 37 99 235;
+    --color-primary-700: 29 78 216;
+    --color-primary-800: 30 64 175;
+    --color-primary-900: 30 58 138;
+  }
+}
+
+@layer components {
+  .form-input {
+    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm;
+  }
+
+  .form-select {
+    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white sm:text-sm;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+  }
+
+  .btn-primary {
+    @apply inline-flex justify-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800 shadow sm:rounded-lg;
+  }
+
+  .card-header {
+    @apply px-4 py-5 sm:px-6 border-b border-gray-200 dark:border-gray-700;
+  }
+
+  .card-body {
+    @apply px-4 py-5 sm:p-6;
+  }
+
+  .card-footer {
+    @apply px-4 py-4 sm:px-6 border-t border-gray-200 dark:border-gray-700;
+  }
+}
+
+/* Leaflet map styles */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  z-index: 1;
+}
+
+.leaflet-control-container {
+  z-index: 2;
+}
+
+.leaflet-marker-icon {
+  background: none;
+  border: none;
+}
+
+/* Custom marker styles */
+.marker-pin {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -15px 0 0 -15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.marker-dot {
+  width: 14px;
+  height: 14px;
+  margin: 8px 0 0 8px;
+  background: #fff;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.custom-div-icon {
+  background: none;
+  border: none;
+}
+
+/* Status colors */
+.marker-active {
+  background: #059669;
+}
+
+.marker-inactive {
+  background: #dc2626;
+}
+
+.marker-maintenance {
+  background: #d97706;
+}
+
+/* Transitions */
+.station-details-enter-active,
+.station-details-leave-active {
+  transition: transform 0.3s ease-in-out;
+}
+
+.station-details-enter-from,
+.station-details-leave-to {
+  transform: translateX(100%);
+}
+
+/* Dark mode overrides */
+.dark .leaflet-container {
+  background: #1f2937;
+}
+
+.dark .leaflet-popup-content-wrapper {
+  background: #374151;
+  color: #f3f4f6;
+}
+
+.dark .leaflet-popup-tip {
+  background: #374151;
+}
+
+.dark .leaflet-control-zoom a {
+  background: #374151;
+  color: #f3f4f6;
+  border-color: #4b5563;
+}
+
+.dark .leaflet-control-zoom a:hover {
+  background: #4b5563;
+} 
